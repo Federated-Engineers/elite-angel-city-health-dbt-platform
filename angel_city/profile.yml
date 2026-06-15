@@ -1,0 +1,17 @@
+angel_city:  
+  target: dev  
+  outputs:
+    dev:
+      type: snowflake
+      account: ehuilyu-xq84505.snowflakecomputing.com
+      user: dbt
+
+      role: DEV
+      private_key: "{{ env_var('SNOWFLAKE_PRIVATE_KEY') }}"
+      private_key_passphrase: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PASSPHRASE') }}"
+
+
+      database: ANGEL_CITY
+      schema: RAW       
+      threads: 4   
+      warehouse: COMPUTE_WH
