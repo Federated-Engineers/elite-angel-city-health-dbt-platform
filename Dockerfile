@@ -11,3 +11,4 @@ COPY . .
 RUN chmod +x test.sh
 
 ENTRYPOINT ["./test.sh"]
+
