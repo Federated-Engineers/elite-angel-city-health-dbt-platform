@@ -1,0 +1,50 @@
+name: slim ci
+
+on:
+  pull_request:
+    branches:
+      - "**"
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+
+jobs:
+  slim-ci:
+    runs-on: ubuntu-latest
+
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      DBT_USER: ${{ secrets.DBT_USER }}
+      SNOWFLAKE_PRIVATE_KEY_PATH: /tmp/snowflake_key.p8
+      SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Write Snowflake private key to file
+        run: |
+          printf '%s\n' "${{ secrets.SNOWFLAKE_PRIVATE_KEY }}" > /tmp/snowflake_key.p8
+          chmod 600 /tmp/snowflake_key.p8
+
+      - name: Run dbt commands
+        run: |
+          cd angel_city
+          dbt debug
+          dbt deps
+
+          
+
+
+          

@@ -15,3 +15,4 @@ angel_city:
       schema: RAW       
       threads: 4   
       warehouse: COMPUTE_WH
+      
